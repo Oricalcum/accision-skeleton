@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="accision-skeleton">
+  <!--
+    - Define all properties
+    -->
+  <property file="ant/build.properties" />
+
+  <!--
+    - Define all imports
+    -->
+  <import file="${ant.common.file}" />
+  <import file="${ant.flesh.file}" />
+  <import file="${ant.generate.file}" />
+  <import file="${ant.taskdefs.file}" />
+
+	<!--
+		- project: creates a skeleton project
+		-->
+	<target name="project" depends="clean" description="project: creates a new skeleton project with the project name specified">
+		<condition property="noNameSet">
+			<not>
+				<isset property="name" />
+			</not>
+		</condition>
+
+		<if>
+			<equals arg1="${noNameSet}" arg2="true" />
+			<then>
+				<echo message="A project name is required to create the skeleton project." />
+				<echo message="You may pass in a name w/ -Dname=###." />
+			</then>
+			<else>
+				<echo message="Creating project ${name}" />
+
+				<java outputproperty="uuid" failonerror="true" classname="com.accision.base.util.UuidFactory" classpathref="classpath" fork="true">
+					<arg value="1" />
+				</java>
+
+				<toupper property="baseSessionForm" string="${name}" />
+				<propertyregex property="baseSessionForm" override="true" input="${baseSessionForm}" regexp="[^a-zA-Z]" replace="_" casesensitive="true" global="true" />
+				<property name="sessionForm" value="${baseSessionForm}_FORM" />
+				<property name="sessionAdminForm" value="${baseSessionForm}_ADMIN_FORM" />
+				<propertyregex property="baseName" override="true" input="${name}" regexp="[^a-zA-Z]" replace="" casesensitive="true" global="true" />
+				<tolower property="package" string="${baseName}" />
+				<propertyregex property="baseNameVar1" override="true" input="${baseName}" regexp="^([a-zA-Z])(\w+)" replace="\1" casesensitive="true" global="true" />
+				<tolower property="baseNameVar1" string="${baseNameVar1}" />
+				<propertyregex property="baseNameVar2" override="true" input="${baseName}" regexp="^([a-zA-Z])(\w+)" replace="\2" casesensitive="true" global="true" />
+				<property name="baseNameVar" value="${baseNameVar1}${baseNameVar2}" />
+
+				<echo message="using project name:       ${name}" />
+				<echo message="using package:            com.accision.${package}" />
+				<echo message="using portlet uuid:       ${uuid}" />
+				<echo message="using session form:       ${sessionForm}" />
+				<echo message="using session admin form: ${sessionAdminForm}" />
+				<echo message="using bean name:          ${baseName}Bean ${baseNameVar}Bean" />
+				<echo message="using view name:          ${baseName}View ${baseNameVar}View" />
+				<echo message="using form name:          ${baseName}Form ${baseNameVar}Form" />
+
+				<antcall target="cleanDir">
+					<param name="dirName" value="${build.dir}/${package}/branch" />
+				</antcall>
+
+				<antcall target="cleanDir">
+					<param name="dirName" value="${build.dir}/${package}/tags" />
+				</antcall>
+
+				<antcall target="cleanDir">
+					<param name="dirName" value="${build.dir}/${package}/trunk/data" />
+				</antcall>
+
+				<antcall target="cleanDir">
+					<param name="dirName" value="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation" />
+				</antcall>
+
+				<copy todir="${build.dir}/${package}/trunk">
+					<fileset dir="${skeleton.dir}">
+						<exclude name="data/skeleton.xml" />
+						<exclude name="src/java/**" />
+					</fileset>
+				</copy>
+				<copy file="${skeleton.dir}/data/skeleton.xml" tofile="${build.dir}/${package}/trunk/data/${package}.xml" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/Preference.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/Preference.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonBean.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}Bean.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonView.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}View.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonForm.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}Form.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonAdminEditView.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminEditView.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonAdminEditProcessView.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminEditProcessView.java" />
+				<copy file="${skeleton.dir}/src/java/com/accision/skeleton/presentation/SkeletonAdminForm.java" tofile="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminForm.java" />
+
+				<antcall target="flesh">
+					<param name="name" value="${name}" />
+					<param name="package" value="${package}" />
+					<param name="uuid" value="${uuid}" />
+					<param name="sessionForm" value="${sessionForm}" />
+					<param name="sessionAdminForm" value="${sessionAdminForm}" />
+					<param name="baseName" value="${baseName}" />
+					<param name="baseNameVar" value="${baseNameVar}" />
+				</antcall>
+
+				<zip destfile="${build.dir}/${package}.zip">
+					<fileset dir="${build.dir}">
+						<exclude name="*.zip" />
+					</fileset>
+				</zip>
+			</else>
+		</if>
+	</target>
+
+	<!--
+		- clean: clean all output directories
+		-->
+	<target name="clean" description="clean all output directories">
+		<antcall target="cleanDir">
+			<param name="dirName" value="${build.dir}" />
+		</antcall>
+	</target>
+
+	<!--
+		- help / usage: display main ant targets
+		-->
+	<target name="usage" depends="help" />
+
+	<target name="help" description="display main ant targets">
+		<helpTask />
+	</target>
+</project>

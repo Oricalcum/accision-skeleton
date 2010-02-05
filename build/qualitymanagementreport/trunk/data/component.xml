@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epideploy:component
+	xmlns:epideploy="http://www.epicentric.com/deployment"
+	component-type="ModuleTypes"
+	component-id="com.accision.qualitymanagementreport"
+	major-version="1"
+	minor-version="0"
+	build-version="0"
+	title="Quality Management Report"
+	description="qualitymanagementreport"
+>
+	<epideploy:detail>
+		<module-config auto-deploy="true">
+			<descriptor-id>com.accision.qualitymanagementreport</descriptor-id>
+			<web-deployment-path>/beans/accision/qualitymanagementreport</web-deployment-path>
+			<locale-key>df81c1cc09f311dfa6cb8f6db1bdd305</locale-key>
+		</module-config>
+	</epideploy:detail>
+</epideploy:component>

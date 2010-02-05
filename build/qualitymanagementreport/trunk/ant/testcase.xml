@@ -1,0 +1,52 @@
+<project name="testcase" default="invalid.testcase" basedir=".">
+  <path id="testClasspath">
+		<pathelement path="${java.classes.dir}" />
+
+		<path refid="classpath" />
+
+		<fileset dir="${lib.dir}">
+			<patternset refid="jar.patternset" />
+		</fileset>
+	</path>
+
+	<!--
+		- test: run the junit test suite
+		-->
+	<target name="test" depends="compileAllSrc, copyConfs" description="run the junit test suite">
+		<antcall target="cleanDir">
+			<param name="dirName" value="${test.report.dir}" />
+		</antcall>
+
+		<property name="testcase.pattern" value="**/*Test" />
+
+		<junit fork="yes" failureproperty="tests.failed">
+			<classpath>
+				<path refid="testClasspath" />
+			</classpath>
+
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+
+			<test name="com.accision.transcription.common.TranscriptionTestSuite" todir="${test.report.dir}" />
+		</junit>
+
+		<antcall target="runReports" />
+	</target>
+
+	<!--
+		- runReports: generate html reports for test results
+		-->
+	<target name="runReports" unless="test.failed" description="generate html reports for test results">
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.report.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+
+			<report format="frames" todir="${test.report.dir}/html" />
+		</junitreport>
+	</target>
+
+	<target name="invalid.testcase">
+		<echo message="this file is intended to be imported from other ant files" />
+	</target>
+</project>

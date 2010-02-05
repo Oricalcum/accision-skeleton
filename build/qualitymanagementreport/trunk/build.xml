@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="accision-qualitymanagementreport">
+  <!--
+    - Define all properties
+    -->
+  <property file="ant/build.properties" />
+
+  <!--
+    - Define all imports
+    -->
+  <import file="${ant.common.file}" />
+  <import file="${ant.generate.file}" />
+  <import file="${ant.taskdefs.file}" />
+  <import file="${ant.testcase.file}" />
+
+	<!--
+		- dist: prepare all files for distribution
+		-->
+	<target name="dist" depends="clean, zip" description="prepare all files for distribution" />
+
+	<!--
+		- zip: zip all files 
+		-->
+	<target name="zip" depends="car, javadoc" description="zip all files: assumes car file already exists">
+		<zip destfile="${zip.file}">
+			<fileset dir="${build.dir}">
+				<exclude name="*.zip" />
+			</fileset>
+		</zip>
+	</target>
+
+	<!--
+		- car: create car file
+		-->
+	<target name="car" depends="compileAllSrc, copyConfs" description="create the car file">
+		<antcall target="cleanDir">
+			<param name="dirName" value="${car.dir}" />
+		</antcall>
+
+		<copy file="${data.dir}/component.xml" todir="${car.dir}" />
+		<copy file="${data.dir}/${project.name}.xml" tofile="${car.dir}/WEB-INF/misc/config/beans/defs/${project.name}.pbd" />
+		<copy todir="${car.dir}/WEB-INF/classes">
+			<fileset dir="${java.classes.dir}">
+				<exclude name="**/*Test.class" />
+			</fileset>
+		</copy>
+		<copy todir="${car.dir}/jsp">
+			<fileset dir="${view.dir}" />
+		</copy>       
+		<copy todir="${car.dir}/WEB-INF/lib" flatten="true">
+			<fileset dir="${lib.dir}">
+				<exclude name="**/accision/*-dependency.jar" />
+			</fileset>
+		</copy>       
+
+		<jar destfile="${car.file}">
+			<fileset dir="${build.dir}/car" />
+		</jar>
+
+		<antcall target="cleanFile">
+			<param name="fileName" value="${build.dir}/car" />
+		</antcall>
+	</target>
+
+	<!-- will want to look into checkstyle ant task to auto-format code; perhaps jindent ant task here -->
+	<!--
+		- checkstyle: java source code formatter
+		-->
+	<target name="checkstyle">
+		<taskdef resource="checkstyletask.properties" classpath="${path.build.lib}/checkstyle-all-3.4.jar"/>
+
+		<checkstyle config="${path.build}/checkstyle_checks.xml">
+			<fileset dir="${path.src.java}" includes="**/*.java"/>
+			<property key="checkstyle.cache.file" file="${path.build}/checkstyle.cache"/>
+			<classpath refid="compile.classpath"/>
+		</checkstyle>
+	</target>
+
+	<!--
+		- javadoc: create javadoc
+		-->
+	<target name="javadoc" depends="compileAllSrc" description="Create component Javadoc documentation">
+		<antcall target="cleanDir">
+			<param name="dirName" value="${api.dir}" />
+		</antcall>
+
+		<javadoc author="true" bottom="${project.title}" destdir="${api.dir}" source="${compile.java.version}" doctitle="${project.title}" packagenames="*" access="protected" sourcepath="${java.src.dir}" version="true" windowtitle="${project.title} (Version ${project.version})">
+			<classpath refid="classpath" />
+		</javadoc>
+	</target>
+
+	<!--
+		- clean: clean all output directories
+		-->
+	<target name="clean" description="clean all output directories">
+		<antcall target="cleanDir">
+			<param name="dirName" value="${java.classes.dir}" />
+		</antcall>
+
+		<antcall target="cleanDir">
+			<param name="dirName" value="${build.dir}" />
+		</antcall>
+	</target>
+
+	<!--
+		- compileAllSrc: compile all source files
+		-->
+	<target name="compileAllSrc" depends="compileJavaSrc, compileTestSrc" description="compile all source files" />
+
+	<!--
+		- compileJavaSrc: compile java source files
+		-->
+	<target name="compileJavaSrc" description="compile all java source files">
+		<javac classpathref="classpath" destdir="${java.classes.dir}" srcdir="${java.src.dir}" debug="true" />
+	</target>
+
+	<!--
+		- compileTestSrc: compile test source files
+		-->
+	<target name="compileTestSrc" description="compile all test source files">
+		<javac classpathref="classpath" destdir="${test.classes.dir}" srcdir="${test.src.dir}" debug="true" />
+	</target>
+
+	<!--
+		- copyConfs: copy all configuration files to their respective locations
+		-->
+	<target name="copyConfs" description="copy all configuration files to their respective locations">
+		<copy file="${conf.dir}/${log4j.file}" todir="${java.classes.dir}" overwrite="true" />
+	</target>
+
+	<!--
+		- help / usage: display main ant targets
+		-->
+	<target name="usage" depends="help" />
+
+	<target name="help" description="display main ant targets">
+		<helpTask />
+	</target>
+</project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epideploy:component
+	xmlns:epideploy="http://www.epicentric.com/deployment"
+	component-type="ModuleTypes"
+	component-id="com.accision.@package"
+	major-version="1"
+	minor-version="0"
+	build-version="0"
+	title="@title"
+	description="@package"
+>
+	<epideploy:detail>
+		<module-config auto-deploy="true">
+			<descriptor-id>com.accision.@package</descriptor-id>
+			<web-deployment-path>/beans/accision/@package</web-deployment-path>
+			<locale-key>@uuid</locale-key>
+		</module-config>
+	</epideploy:detail>
+</epideploy:component>
