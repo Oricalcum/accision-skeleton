@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<PORTALBEAN
+	ID="com.accision.qualitymanagementreport"
+	CLASS="com.accision.qualitymanagementreport.presentation.QualityManagementReportBean"
+	TYPE_UID="df81c1cc09f311dfa6cb8f6db1bdd305"
+	VERSION="1"
+	CATEGORY="ENDUSER"
+	DISPLAYCATEGORY="ACCISION"
+>
+	<TITLE>Quality Management Report</TITLE>
+	<NAME>qualitymanagementreport</NAME>
+	<ABSTRACT>Quality Management Report</ABSTRACT>
+	<DATA>
+		<FIELD NAME="JSPDirName" VALUE="accision/qualitymanagementreport" />
+	</DATA>
+	<VIEW ID="MY_PORTAL_VIEW" />
+</PORTALBEAN>

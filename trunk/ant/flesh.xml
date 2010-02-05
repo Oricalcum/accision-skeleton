@@ -1,0 +1,90 @@
+<project name="flesh" default="invalid" basedir=".">
+  <target name="flesh" description="update the dynamic configuration files with the project's name">
+		<replace file="${build.dir}/${package}/trunk/.project">
+      <replacefilter token="@projectName" value="${package}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/build.xml">
+      <replacefilter token="@projectName" value="${package}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/ant/build.properties">
+      <replacefilter token="@projectName" value="${package}" />
+      <replacefilter token="@projectTitle" value="${title}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/data/component.xml">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@title" value="${name}" />
+      <replacefilter token="@uuid" value="${uuid}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/data/${package}.xml">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@beanName" value="${baseName}Bean" />
+      <replacefilter token="@title" value="${name}" />
+      <replacefilter token="@uuid" value="${uuid}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/view/view.jsp">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@viewName" value="${baseName}View" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/Preference.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@title" value="${name}" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}Bean.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@sessionForm" value="${sessionForm}" />
+      <replacefilter token="@sessionAdminForm" value="${sessionAdminForm}" />
+      <replacefilter token="@beanName" value="${baseName}Bean" />
+      <replacefilter token="@varBeanName" value="${baseNameVar}Bean" />
+      <replacefilter token="@viewName" value="${baseName}View" />
+      <replacefilter token="@varViewName" value="${baseNameVar}View" />
+      <replacefilter token="@formName" value="${baseName}Form" />
+      <replacefilter token="@varFormName" value="${baseNameVar}Form" />
+      <replacefilter token="@adminViewName" value="${baseName}AdminEditView" />
+      <replacefilter token="@varAdminViewName" value="${baseNameVar}AdminEditView" />
+      <replacefilter token="@adminFormName" value="${baseName}AdminForm" />
+      <replacefilter token="@varAdminFormName" value="${baseNameVar}AdminForm" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}View.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@beanName" value="${baseName}Bean" />
+      <replacefilter token="@varBeanName" value="${baseNameVar}Bean" />
+      <replacefilter token="@viewName" value="${baseName}View" />
+      <replacefilter token="@formName" value="${baseName}Form" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}Form.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@formName" value="${baseName}Form" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminEditView.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@beanName" value="${baseName}Bean" />
+      <replacefilter token="@varBeanName" value="${baseNameVar}Bean" />
+      <replacefilter token="@adminViewName" value="${baseName}AdminEditView" />
+      <replacefilter token="@adminFormName" value="${baseName}AdminForm" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminEditProcessView.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@adminProcessViewName" value="${baseName}AdminEditProcessView" />
+		</replace>
+
+		<replace file="${build.dir}/${package}/trunk/src/java/com/accision/${package}/presentation/${baseName}AdminForm.java">
+      <replacefilter token="@package" value="${package}" />
+      <replacefilter token="@adminFormName" value="${baseName}AdminForm" />
+		</replace>
+  </target>
+
+  <target name="invalid">
+  	<echo message="this file is intended to be imported from other ant files" />
+  </target>
+</project>

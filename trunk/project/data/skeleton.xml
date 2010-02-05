@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<PORTALBEAN
+	ID="com.accision.@package"
+	CLASS="com.accision.@package.presentation.@beanName"
+	TYPE_UID="@uuid"
+	VERSION="1"
+	CATEGORY="ENDUSER"
+	DISPLAYCATEGORY="ACCISION"
+>
+	<TITLE>@title</TITLE>
+	<NAME>@package</NAME>
+	<ABSTRACT>@title</ABSTRACT>
+	<DATA>
+		<FIELD NAME="JSPDirName" VALUE="accision/@package" />
+	</DATA>
+	<VIEW ID="MY_PORTAL_VIEW" />
+</PORTALBEAN>

@@ -1,0 +1,29 @@
+<project name="taskdefs" default="invalid.taskdefs" basedir=".">
+  <taskdef classname="net.werm.ant.HelpTask" name="helpTask">
+		<classpath>
+			<fileset dir="${ant.lib.helpTask.dir}">
+				<patternset refid="jar.patternset" />
+			</fileset>
+		</classpath>
+	</taskdef>
+
+  <!-- http://ant-contrib.sourceforge.net -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <fileset dir="${ant.lib.antcontrib.dir}">
+        <patternset refid="jar.patternset" />
+      </fileset>
+    </classpath>
+  </taskdef>
+
+	<!-- presets -->
+	<presetdef name="ah.javac">
+		<javac debug="true" optimize="false" memoryInitialSize="256m" memoryMaximumSize="1024m" fork="true">
+			<classpath refid="classpath" />
+		</javac>
+	</presetdef>
+
+	<target name="invalid.taskdefs">
+		<echo message="this file is intended to be imported from other ant files" />
+	</target>
+</project>

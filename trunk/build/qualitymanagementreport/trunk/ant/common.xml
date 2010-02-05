@@ -1,0 +1,51 @@
+<project name="common" default="invalid" basedir=".">
+	<patternset id="jar.patternset">
+		<include name="**/*.jar" />
+	</patternset>
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+			<patternset refid="jar.patternset" />
+		</fileset>
+	</path>
+
+	<!--
+		- deleteDir: deletes directory, if it exists
+		-->
+	<target name="deleteDir" if="dirExists" description="delete directory, if it exists">
+		<delete dir="${dirName}" />	
+	</target>
+	
+	<!--
+		- cleanDir: delete and re-create directory
+		-->
+	<target name="cleanDir" description="calls deleteDir and creates the directory">
+		<!-- see if the directory exists -->
+		<available file="${dirName}" property="dirExists" />
+		
+		<antcall target="deleteDir" inheritRefs="true" />
+		
+		<mkdir dir="${dirName}" />
+	</target>
+
+	<!--
+		- deleteFile: deletes file, if it exists
+		-->
+	<target name="deleteFile" if="fileExists" description="delete file, if it exists">
+		<delete dir="${fileName}" />	
+	</target>
+
+	<!--
+		- cleanFile: delete a file
+		-->
+	<target name="cleanFile" description="calls deleteFile">
+		<!-- see if the file exists -->
+		<available file="${fileName}" property="fileExists" />
+
+		<antcall target="deleteFile" inheritRefs="true" />
+	</target>
+
+  <target name="invalid">
+  	<echo message="this file is intended to be imported from other ant files" />
+  </target>
+</project>

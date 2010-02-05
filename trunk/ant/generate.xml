@@ -1,0 +1,32 @@
+<project name="generate" default="invalid" basedir=".">
+	<!--
+		- genIds: generate valid UUIDs
+		-->
+	<target name="genIds" description="generates valid UUIDs ex. ant genIds -Dids=10">
+		<condition property="noIdsSet">
+			<not>
+				<isset property="ids" />
+			</not>
+		</condition>
+
+		<if>
+			<equals arg1="${noIdsSet}" arg2="true" />
+			<then>
+				<echo message="No valid ids number passed in, defaulting to 1." />
+				<echo message="You may pass in a number w/ -Dids=### in order to generate ### ids." />
+
+				<property name="ids" value="1" />
+			</then>
+		</if>
+
+		<echo message="using ids: ${ids}" />
+
+		<java failonerror="true" classname="com.accision.base.util.UuidFactory" classpathref="classpath" fork="true">
+			<arg value="${ids}" />
+		</java>
+	</target>
+
+  <target name="invalid">
+  	<echo message="this file is intended to be imported from other ant files" />
+  </target>
+</project>
